@@ -38,6 +38,8 @@ func App() *buffalo.App {
 		// Protect against CSRF attacks. https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)
 		// Remove to disable this.
 		app.Use(csrf.New)
+		app.Use(middleware.PopTransaction(models.DB))
+		app.Use(SetCurrentUser)
 
 		// Wraps each request in a transaction.
 		//  c.Value("tx").(*pop.PopTransaction)
