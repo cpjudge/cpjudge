@@ -1,0 +1,6 @@
+- id: "host.created.success"
+  translation: "Host was successfully created."
+- id: "host.updated.success"
+  translation: "Host was successfully updated."
+- id: "host.destroyed.success"
+  translation: "Host was successfully destroyed."

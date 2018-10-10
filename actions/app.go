@@ -51,12 +51,18 @@ func App() *buffalo.App {
 
 		app.GET("/", HomeHandler)
 
-		auth := app.Group("/users")
-		auth.GET("/register", UsersRegisterGet)
-		auth.POST("/register", UsersRegisterPost)
-		auth.GET("/login", UsersLoginGet)
-		auth.POST("/login", UsersLoginPost)
-		auth.GET("/logout", UsersLogout)
+		userAuth := app.Group("/users")
+		userAuth.GET("/register", UsersRegisterGet)
+		userAuth.POST("/register", UsersRegisterPost)
+		userAuth.GET("/login", UsersLoginGet)
+		userAuth.POST("/login", UsersLoginPost)
+		userAuth.GET("/logout", UsersLogout)
+
+		hostAuth := app.Group("/hosts")
+		hostAuth.GET("/", HostHomePage)
+		hostAuth.GET("/register", HostsRegisterGet)
+		hostAuth.POST("/register", HostsRegisterPost)
+
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}
 
