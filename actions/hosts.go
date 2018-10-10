@@ -3,6 +3,7 @@ package actions
 import (
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
+	"github.com/gobuffalo/validate"
 	"github.com/pkg/errors"
 	"github.com/shashankp/cpjudge/models"
 )
@@ -48,4 +49,54 @@ func HostsRegisterPost(c buffalo.Context) error {
 	c.Flash().Add("success", "Account created successfully.")
 	// and redirect to the home page
 	return c.Redirect(302, "/")
+}
+
+// HostsLoginGet displays a login form
+func HostsLoginGet(c buffalo.Context) error {
+	return c.Render(200, r.HTML("hosts/login"))
+}
+
+// HostsLoginPost logs in a host.
+func HostsLoginPost(c buffalo.Context) error {
+	host := &models.Host{}
+	// Bind the host to the html form elements
+	if err := c.Bind(host); err != nil {
+		return errors.WithStack(err)
+	}
+	tx := c.Value("tx").(*pop.Connection)
+	err := host.Authorize(tx)
+	if err != nil {
+		c.Set("host", host)
+		verrs := validate.NewErrors()
+		verrs.Add("Login", "Invalid email or password.")
+		c.Set("errors", verrs.Errors)
+		return c.Render(422, r.HTML("hosts/login"))
+	}
+	c.Session().Set("current_host_id", host.ID)
+	c.Flash().Add("success", "Welcome back!")
+	return c.Redirect(302, "/")
+}
+
+// HostsLogout clears the session and logs out the host.
+func HostsLogout(c buffalo.Context) error {
+	c.Session().Clear()
+	c.Flash().Add("success", "Goodbye!")
+	return c.Redirect(302, "/")
+}
+
+// SetCurrentHost attempts to find a host based on the current_host_id
+// in the session. If one is found it is set on the context.
+func SetCurrentHost(next buffalo.Handler) buffalo.Handler {
+	return func(c buffalo.Context) error {
+		if uid := c.Session().Get("current_host_id"); uid != nil {
+			u := &models.Host{}
+			tx := c.Value("tx").(*pop.Connection)
+			err := tx.Find(u, uid)
+			if err != nil {
+				return errors.WithStack(err)
+			}
+			c.Set("current_host", u)
+		}
+		return next(c)
+	}
 }

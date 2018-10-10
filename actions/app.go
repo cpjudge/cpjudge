@@ -40,6 +40,7 @@ func App() *buffalo.App {
 		app.Use(csrf.New)
 		app.Use(middleware.PopTransaction(models.DB))
 		app.Use(SetCurrentUser)
+		app.Use(SetCurrentHost)
 
 		// Wraps each request in a transaction.
 		//  c.Value("tx").(*pop.PopTransaction)
@@ -62,6 +63,9 @@ func App() *buffalo.App {
 		hostAuth.GET("/", HostHomePage)
 		hostAuth.GET("/register", HostsRegisterGet)
 		hostAuth.POST("/register", HostsRegisterPost)
+		hostAuth.GET("/login", HostsLoginGet)
+		hostAuth.POST("/login", HostsLoginPost)
+		hostAuth.GET("/logout", HostsLogout)
 
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}

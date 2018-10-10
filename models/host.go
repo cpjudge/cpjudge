@@ -1,6 +1,7 @@
 package models
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"strings"
@@ -51,7 +52,7 @@ func (h *Host) Validate(tx *pop.Connection) (*validate.Errors, error) {
 		&validators.StringIsPresent{Field: h.Hostname, Name: "Hostname"},
 		&validators.StringIsPresent{Field: h.Password, Name: "Password"},
 		&validators.StringsMatch{Name: "Password", Field: h.Password, Field2: h.PasswordConfirm, Message: "Passwords do not match."},
-		&HostnameNotTaken{Name: "Username", Field: h.Hostname, tx: tx},
+		&HostnameNotTaken{Name: "Hostname", Field: h.Hostname, tx: tx},
 		&HostEmailNotTaken{Name: "Email", Field: h.Email, tx: tx},
 	), nil
 }
@@ -84,7 +85,7 @@ func (v *HostEmailNotTaken) IsValid(errors *validate.Errors) {
 	queryHost := Host{}
 	err := query.First(&queryHost)
 	if err == nil {
-		// found a user with the same email
+		// found a host with the same email
 		errors.Add(validators.GenerateKey(v.Name), "An account with that email already exists.")
 	}
 }
@@ -101,7 +102,7 @@ func (h *Host) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.NewErrors(), nil
 }
 
-// Create validates and creates a new User.
+// Create validates and creates a new Host.
 func (h *Host) Create(tx *pop.Connection) (*validate.Errors, error) {
 	h.Email = strings.ToLower(h.Email)
 	h.Admin = false
@@ -111,4 +112,22 @@ func (h *Host) Create(tx *pop.Connection) (*validate.Errors, error) {
 	}
 	h.PasswordHash = string(pwdHash)
 	return tx.ValidateAndCreate(h)
+}
+
+// Authorize checks host's password for logging in
+func (u *Host) Authorize(tx *pop.Connection) error {
+	err := tx.Where("email = ?", strings.ToLower(u.Email)).First(u)
+	if err != nil {
+		if errors.Cause(err) == sql.ErrNoRows {
+			// couldn't find an host with that email address
+			return errors.New("Host not found.")
+		}
+		return errors.WithStack(err)
+	}
+	// confirm that the given password matches the hashed password from the db
+	err = bcrypt.CompareHashAndPassword([]byte(u.PasswordHash), []byte(u.Password))
+	if err != nil {
+		return errors.New("Invalid password.")
+	}
+	return nil
 }

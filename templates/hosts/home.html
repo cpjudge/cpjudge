@@ -1,5 +1,27 @@
-<h1>Welcome to Host homepage</h1>
+<div class="row mt-5">
+    <div class="col text-center">
+        <h1>Welcome Host!</h1>
+    </div>
+</div>
 
-<p><a href="<%= hostsRegisterPath() %>">Host register</a></p>
+<!-- <p><a href="<%= hostsRegisterPath() %>">Host register</a></p>
 
-<!-- <p><a href="hostsLoginPath()">Host login</a></p> -->
+<p><a href="<%= hostsLoginPath() %>">Host login</a></p> -->
+<!-- <div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="text-center">
+                <a href="<%= hostsLoginPath() %>" class="btn btn-outline-success" role="button">Host Login</a>
+                <a href="<%= hostsRegisterPath() %>" class="btn btn-success" role="button">Host Registration</a>
+                
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<div class="row mt-5">
+    <div class="col text-center">
+        <a href="<%= hostsLoginPath() %>" class="btn btn-outline-success" role="button">Host Login</a>
+        <a href="<%= hostsRegisterPath() %>" class="btn btn-success" role="button">Host Registration</a>
+    </div>
+</div>
