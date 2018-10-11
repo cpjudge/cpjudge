@@ -45,7 +45,7 @@ func App() *buffalo.App {
 		// Wraps each request in a transaction.
 		//  c.Value("tx").(*pop.PopTransaction)
 		// Remove to disable this.
-		app.Use(middleware.PopTransaction(models.DB))
+		//app.Use(middleware.PopTransaction(models.DB))
 
 		// Setup and use translations:
 		app.Use(translations())
@@ -66,6 +66,7 @@ func App() *buffalo.App {
 		hostAuth.GET("/login", HostsLoginGet)
 		hostAuth.POST("/login", HostsLoginPost)
 		hostAuth.GET("/logout", HostsLogout)
+		//hostAuth.GET("/dashboard", HostsDashboard)
 
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}
