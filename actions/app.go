@@ -66,7 +66,16 @@ func App() *buffalo.App {
 		hostAuth.GET("/login", HostsLoginGet)
 		hostAuth.POST("/login", HostsLoginPost)
 		hostAuth.GET("/logout", HostsLogout)
-		//hostAuth.GET("/dashboard", HostsDashboard)
+		hostAuth.GET("/dashboard", HostsDashboard)
+
+		contestGroup := app.Group("/contests")
+		contestGroup.GET("/index", ContestsIndex)
+		contestGroup.GET("/create", HostRequired(ContestsCreateGet))
+		contestGroup.POST("/create", HostRequired(ContestsCreatePost))
+		contestGroup.GET("/detail/{cid}", ContestsDetail)
+		contestGroup.GET("/edit/{cid}", HostRequired(ContestsEditGet))
+		contestGroup.POST("/edit/{cid}", HostRequired(ContestsEditPost))
+		contestGroup.GET("/delete/{cid}", HostRequired(ContestsDelete))
 
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}

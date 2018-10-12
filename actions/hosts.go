@@ -78,9 +78,9 @@ func HostsLoginPost(c buffalo.Context) error {
 }
 
 // HostsDashboard displays host's dashboard
-// func HostsDashboard(c buffalo.Context) error {
-// 	return c.Render(200, r.HTML("hosts/dashboard.html"))
-// }
+func HostsDashboard(c buffalo.Context) error {
+	return c.Render(200, r.HTML("hosts/dashboard.html"))
+}
 
 // HostsLogout clears the session and logs out the host.
 func HostsLogout(c buffalo.Context) error {
@@ -103,5 +103,17 @@ func SetCurrentHost(next buffalo.Handler) buffalo.Handler {
 			c.Set("current_host", u)
 		}
 		return next(c)
+	}
+}
+
+// HostRequired requires a host to be logged in before accessing a route.
+func HostRequired(next buffalo.Handler) buffalo.Handler {
+	return func(c buffalo.Context) error {
+		_, ok := c.Value("current_host").(*models.Host)
+		if ok {
+			return next(c)
+		}
+		c.Flash().Add("danger", "You are not authorized to view that page.")
+		return c.Redirect(302, "/")
 	}
 }

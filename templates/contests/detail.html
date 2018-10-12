@@ -1,0 +1,15 @@
+<%= if (current_host) { %>
+    <div class="row">
+        <div class="col-md-3 offset-md-9">
+            <a href="<%= editContestsPath({cid: contest.ID}) %>" class="btn btn-primary">Edit Contest</a>
+            <a href="<%= contestsDeletePath({cid: contest.ID}) %>" class="btn btn-danger">Delete Contest</a>
+        </div>
+    </div>
+<% } %>
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h1 class="text-center"><%= contest.Title %></h1>
+        <p>by <span class="author"><%= host.Hostname %></span></p>
+        <p><%= markdown(contest.Description) %></p>
+    </div>
+</div>

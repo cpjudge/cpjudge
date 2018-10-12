@@ -24,6 +24,11 @@
                 <a class="nav-link" href="<%= hostsPath() %>">Host</a>
             </li>
             <% } %>
+            <%= if (!current_user || !current_host) { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="<%= contestsIndexPath() %>">Contests</a>
+                </li>
+            <% } %>
             </ul>
             <ul class="navbar-nav">
             <%= if (current_user) { %>
