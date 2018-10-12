@@ -69,7 +69,7 @@ func UsersLoginPost(c buffalo.Context) error {
 	}
 	c.Session().Set("current_user_id", user.ID)
 	c.Flash().Add("success", "Welcome back!")
-	return c.Redirect(302, "/")
+	return c.Redirect(302, "/contests/index")
 }
 
 // UsersLogout clears the session and logs out the user.
