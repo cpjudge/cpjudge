@@ -74,7 +74,7 @@ func HostsLoginPost(c buffalo.Context) error {
 	}
 	c.Session().Set("current_host_id", host.ID)
 	c.Flash().Add("success", "Welcome back!")
-	return c.Redirect(302, "dashboard")
+	return c.Redirect(302, "/contests/index")
 }
 
 // HostsDashboard displays host's dashboard

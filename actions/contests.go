@@ -54,7 +54,7 @@ func ContestsCreatePost(c buffalo.Context) error {
 	// If there are no errors set a success message
 	c.Flash().Add("success", "New contest added successfully.")
 	// and redirect to the index page
-	return c.Redirect(302, "/")
+	return c.Redirect(302, "index")
 }
 
 // ContestsDetail displays a single contest.
