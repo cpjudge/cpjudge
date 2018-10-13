@@ -68,5 +68,16 @@ func QuestionsDelete(c buffalo.Context) error {
 
 // QuestionsDetail default implementation.
 func QuestionsDetail(c buffalo.Context) error {
+	tx := c.Value("tx").(*pop.Connection)
+	question := &models.Question{}
+	if err := tx.Find(question, c.Param("qid")); err != nil {
+		return c.Error(404, err)
+	}
+	contest := &models.Contest{}
+	if err := tx.Find(contest, question.ContestID); err != nil {
+		return c.Error(404, err)
+	}
+	c.Set("question", question)
+	c.Set("contest", contest)
 	return c.Render(200, r.HTML("questions/detail.html"))
 }

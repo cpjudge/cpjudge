@@ -1,1 +1,16 @@
-<h1>Questions#Detail</h1>
+<%= if (current_host) { %>
+    <div class="row">
+        <div class="col-md-3 offset-md-7">
+            <a href="#" class="btn btn-primary">Edit Question</a>
+            <a href="#" class="btn btn-danger">Delete Question</a>
+            <a href="<%= contestsDetailPath({cid: contest.ID}) %>" class="btn btn-success">Back to Contest</a>
+        </div>
+    </div>
+<% } %>
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h1 class="text-center"><%= question.Title %></h1>
+        <p>in contest <span class="author"><%= contest.Title %></span></p>
+        <p><%= markdown(question.Description) %></p>
+    </div>
+</div>
