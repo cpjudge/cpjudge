@@ -26,12 +26,12 @@
             <% } %>
             <%= if (current_host) { %>
                 <li class="nav-item">
-                    <a class="nav-link" href="<%= contestsIndexPath() %>">My Contests</a>
+                    <a class="nav-link" href="<%= contestsHostIndexPath() %>">My Contests</a>
                 </li>
             <% } %>
             <%= if (current_user) { %>
                 <li class="nav-item">
-                    <a class="nav-link" href="<%= contestsIndexPath() %>">Contests</a>
+                    <a class="nav-link" href="<%= contestsUserIndexPath() %>">Contests</a>
                 </li>
             <% } %>
             </ul>

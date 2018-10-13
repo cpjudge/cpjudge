@@ -8,14 +8,36 @@ import (
 )
 
 // ContestsIndex default implementation.
-func ContestsIndex(c buffalo.Context) error {
+func ContestsUserIndex(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
+
 	contests := &models.Contests{}
 	// Paginate results. Params "page" and "per_page" control pagination.
 	// Default values are "page=1" and "per_page=20".
 	q := tx.PaginateFromParams(c.Params())
 	// Retrieve all Contests from the DB
 	if err := q.All(contests); err != nil {
+		return errors.WithStack(err)
+	}
+	// Make contests available inside the html template
+	c.Set("contests", contests)
+	// Add the paginator to the context so it can be used in the template.
+	c.Set("pagination", q.Paginator)
+	return c.Render(200, r.HTML("contests/index.html"))
+}
+
+// ContestsIndex default implementation.
+func ContestsHostIndex(c buffalo.Context) error {
+	tx := c.Value("tx").(*pop.Connection)
+
+	host := c.Value("current_host").(*models.Host)
+
+	contests := &models.Contests{}
+	// Paginate results. Params "page" and "per_page" control pagination.
+	// Default values are "page=1" and "per_page=20".
+	q := tx.PaginateFromParams(c.Params())
+	// Retrieve all Contests from the DB
+	if err := q.BelongsTo(host).All(contests); err != nil {
 		return errors.WithStack(err)
 	}
 	// Make contests available inside the html template

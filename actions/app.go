@@ -69,7 +69,8 @@ func App() *buffalo.App {
 		hostAuth.GET("/dashboard", HostsDashboard)
 
 		contestGroup := app.Group("/contests")
-		contestGroup.GET("/index", ContestsIndex)
+		contestGroup.GET("/user_index", ContestsUserIndex)
+		contestGroup.GET("/host_index", ContestsHostIndex)
 		contestGroup.GET("/create", HostRequired(ContestsCreateGet))
 		contestGroup.POST("/create", HostRequired(ContestsCreatePost))
 		contestGroup.GET("/detail/{cid}", ContestsDetail)
