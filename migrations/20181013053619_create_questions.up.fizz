@@ -1,0 +1,6 @@
+create_table("questions", func(t) {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("title", "string", {})
+	t.Column("description", "text", {})
+	t.Column("contest_id", "uuid", {})
+})

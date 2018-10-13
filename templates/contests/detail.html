@@ -13,3 +13,25 @@
         <p><%= markdown(contest.Description) %></p>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-3 offset-md-9">
+        <%= if (current_host) { %>
+            <a href="<%= questionsCreatePath({cid: contest.ID}) %>" class="btn btn-success">Add Question</a>
+        <% } %>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <%= for (q) in questions { %>
+            <hr>
+            <a href="#"><h1><%= q.Title %></h1></a>
+            <p><%= markdown(truncate(q.Description, {"size": 200})) %></p>
+        <% } %>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <%= paginator(qPagination) %>
+    </div>
+</div>

@@ -76,7 +76,7 @@ func ContestsCreatePost(c buffalo.Context) error {
 	// If there are no errors set a success message
 	c.Flash().Add("success", "New contest added successfully.")
 	// and redirect to the index page
-	return c.Redirect(302, "index")
+	return c.Redirect(302, "host_index")
 }
 
 // ContestsDetail displays a single contest.
@@ -92,6 +92,23 @@ func ContestsDetail(c buffalo.Context) error {
 	}
 	c.Set("contest", contest)
 	c.Set("host", host)
+
+	question := &models.Question{}
+	c.Set("question", question)
+	questions := models.Questions{}
+	qPage := tx.PaginateFromParams(c.Params())
+	if err := qPage.BelongsTo(contest).All(&questions); err != nil {
+		return errors.WithStack(err)
+	}
+	for i := 0; i < len(questions); i++ {
+		contest := models.Contest{}
+		if err := tx.Find(&contest, questions[i].ContestID); err != nil {
+			return c.Error(404, err)
+		}
+		questions[i].Contest = contest
+	}
+	c.Set("questions", questions)
+	c.Set("qPagination", qPage.Paginator)
 	return c.Render(200, r.HTML("contests/detail"))
 }
 
@@ -139,5 +156,5 @@ func ContestsDelete(c buffalo.Context) error {
 		return errors.WithStack(err)
 	}
 	c.Flash().Add("success", "Contest was successfully deleted.")
-	return c.Redirect(302, "/contests/index")
+	return c.Redirect(302, "/contests/host_index")
 }

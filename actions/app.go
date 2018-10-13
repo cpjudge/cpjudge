@@ -78,6 +78,10 @@ func App() *buffalo.App {
 		contestGroup.POST("/edit/{cid}", HostRequired(ContestsEditPost))
 		contestGroup.GET("/delete/{cid}", HostRequired(ContestsDelete))
 
+		questionGroup := app.Group("/questions")
+		//questionGroup.GET("/index", QuestionsIndex)
+		questionGroup.GET("/create/{cid}", HostRequired(QuestionsCreateGet))
+		questionGroup.POST("/create/{cid}", HostRequired(QuestionsCreatePost))
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}
 
