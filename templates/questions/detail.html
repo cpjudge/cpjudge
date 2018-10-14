@@ -1,9 +1,11 @@
 <%= if (current_host) { %>
     <div class="row">
-        <div class="col-md-3 offset-md-7">
+        <div class="col-md-4 offset-md-1">
+            <a href="<%= contestsDetailPath({cid: contest.ID}) %>" class="btn btn-success">Back to Contest</a>
+        </div>
+        <div class="col-md-4 offset-md-9">
             <a href="#" class="btn btn-primary">Edit Question</a>
             <a href="#" class="btn btn-danger">Delete Question</a>
-            <a href="<%= contestsDetailPath({cid: contest.ID}) %>" class="btn btn-success">Back to Contest</a>
         </div>
     </div>
 <% } %>

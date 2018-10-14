@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"fmt"
+
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/uuid"
@@ -32,6 +34,7 @@ func QuestionsCreateGet(c buffalo.Context) error {
 }
 
 func QuestionsCreatePost(c buffalo.Context) error {
+	fmt.Printf("\n\nQuestion is being created\n\n")
 	question := &models.Question{}
 	//host := c.Value("current_host").(*models.User)
 	if err := c.Bind(question); err != nil {
@@ -43,7 +46,23 @@ func QuestionsCreatePost(c buffalo.Context) error {
 	if err != nil {
 		return errors.WithStack(err)
 	}
+
+	fmt.Println(question)
+
 	question.ContestID = contestID
+
+	//testCasesFile, err := c.File("someFile")
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	// f, err := c.File("TestCasesZipFile")
+	// if err != nil {
+	// 	return errors.WithStack(err)
+	// }
+
+	// question.TestCasesZipFile = f
+
 	verrs, err := tx.ValidateAndCreate(question)
 	if err != nil {
 		return errors.WithStack(err)
@@ -53,6 +72,25 @@ func QuestionsCreatePost(c buffalo.Context) error {
 		return c.Redirect(302, "/contests/detail/%s", c.Param("cid"))
 	}
 	c.Flash().Add("success", "Question added successfully.")
+
+	tx = c.Value("tx").(*pop.Connection)
+	query := tx.Where("testcases_path is NULL")
+	questions := []models.Question{}
+	err = query.All(&questions)
+	if err != nil {
+		fmt.Print("\n\nAll filled!!\n\n")
+		fmt.Printf("%v\n", err)
+	} else {
+		for i := 0; i < len(questions); i++ {
+			fmt.Println("\n\nFound!!!\n\n")
+			question := questions[i]
+			question.TestCasesPath = "./testcases/testcase_" + question.ID.String()
+			tx.ValidateAndSave(&question)
+			fmt.Print("Success!\n")
+			//fmt.Printf("%v\n", user)
+		}
+	}
+
 	return c.Redirect(302, "/contests/detail/%s", c.Param("cid"))
 }
 
