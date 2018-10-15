@@ -1,6 +1,9 @@
 package actions
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
 	"github.com/pkg/errors"
@@ -152,6 +155,27 @@ func ContestsDelete(c buffalo.Context) error {
 	if err := tx.Find(contest, c.Param("cid")); err != nil {
 		return c.Error(404, err)
 	}
+
+	query := tx.Where("contest_id = '" + contest.ID.String() + "'")
+	questions := []models.Question{}
+	err := query.All(&questions)
+
+	if err != nil {
+		fmt.Printf("%v\n", err)
+	} else {
+		for i := 0; i < len(questions); i++ {
+			question := questions[i]
+			err := os.RemoveAll("../testcases/testcase_" + question.ID.String())
+			if err != nil {
+				return errors.WithStack(err)
+			}
+			err = tx.Destroy(&question)
+			if err != nil {
+				return errors.WithStack(err)
+			}
+		}
+	}
+
 	if err := tx.Destroy(contest); err != nil {
 		return errors.WithStack(err)
 	}
