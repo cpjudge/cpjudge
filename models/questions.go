@@ -33,6 +33,7 @@ type Questions []Question
 func (q *Question) AfterSave(tx *pop.Connection) error {
 
 	if !q.TestCasesZipFile.Valid() {
+		fmt.Printf("\n\nZip file is not valid\n\n")
 		return nil
 	}
 	dir := filepath.Join("..", "testcases")
@@ -96,6 +97,11 @@ func (q *Question) AfterSave(tx *pop.Connection) error {
 	}
 
 	err = os.Remove("../testcases/" + testCaseZipFileName)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	err = os.RemoveAll("../testcases/testcase_" + q.ID.String())
 	if err != nil {
 		return errors.WithStack(err)
 	}
