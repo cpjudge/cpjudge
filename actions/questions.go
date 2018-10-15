@@ -74,7 +74,7 @@ func QuestionsCreatePost(c buffalo.Context) error {
 	c.Flash().Add("success", "Question added successfully.")
 
 	tx = c.Value("tx").(*pop.Connection)
-	query := tx.Where("testcases_path is NULL")
+	query := tx.Where("testcases_path = ''")
 	questions := []models.Question{}
 	err = query.All(&questions)
 	if err != nil {
@@ -84,7 +84,7 @@ func QuestionsCreatePost(c buffalo.Context) error {
 		for i := 0; i < len(questions); i++ {
 			fmt.Println("\n\nFound!!!\n\n")
 			question := questions[i]
-			question.TestCasesPath = "./testcases/testcase_" + question.ID.String()
+			question.TestCasesPath = "../testcases/testcase_" + question.ID.String()
 			tx.ValidateAndSave(&question)
 			fmt.Print("Success!\n")
 			//fmt.Printf("%v\n", user)

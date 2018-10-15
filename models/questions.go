@@ -35,7 +35,7 @@ func (q *Question) AfterSave(tx *pop.Connection) error {
 	if !q.TestCasesZipFile.Valid() {
 		return nil
 	}
-	dir := filepath.Join(".", "testcases")
+	dir := filepath.Join("..", "testcases")
 
 	fmt.Println(dir)
 
@@ -95,9 +95,12 @@ func (q *Question) AfterSave(tx *pop.Connection) error {
 		}
 	}
 
-	//q.TestCasesPath = "./testcases/testcase_" + q.ID.String()
+	err = os.Remove("../testcases/" + testCaseZipFileName)
+	if err != nil {
+		return errors.WithStack(err)
+	}
 
-	err = os.Rename("./testcases/testcases", "./testcases/testcase_"+q.ID.String())
+	err = os.Rename("../testcases/testcases", "../testcases/testcase_"+q.ID.String())
 	if err != nil {
 		return errors.WithStack(err)
 	}

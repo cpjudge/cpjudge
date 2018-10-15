@@ -3,5 +3,5 @@ create_table("questions", func(t) {
 	t.Column("title", "string", {})
 	t.Column("description", "text", {})
 	t.Column("contest_id", "uuid", {})
-	t.Column("testcases_path", "string", {})
+	t.Column("testcases_path", "string", {"default": ""})
 })
