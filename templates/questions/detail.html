@@ -5,7 +5,7 @@
         </div>
         <div class="col-md-4 offset-md-9">
             <a href="<%= editQuestionsPath({qid: question.ID}) %>" class="btn btn-primary">Edit Question</a>
-            <a href="#" class="btn btn-danger">Delete Question</a>
+            <a href="<%= questionsDeletePath({qid: question.ID}) %>" class="btn btn-danger">Delete Question</a>
         </div>
     </div>
 <% } %>

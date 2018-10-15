@@ -2,6 +2,7 @@ package actions
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
@@ -148,7 +149,22 @@ func QuestionsEditPost(c buffalo.Context) error {
 
 // QuestionsDelete default implementation.
 func QuestionsDelete(c buffalo.Context) error {
-	return c.Render(200, r.HTML("questions/delete.html"))
+	tx := c.Value("tx").(*pop.Connection)
+	question := &models.Question{}
+	if err := tx.Find(question, c.Param("qid")); err != nil {
+		return c.Error(404, err)
+	}
+	cid := question.ContestID
+	err := os.RemoveAll("../testcases/testcase_" + question.ID.String())
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	if err := tx.Destroy(question); err != nil {
+		return errors.WithStack(err)
+	}
+	c.Flash().Add("success", "Question was successfully deleted.")
+	return c.Redirect(302, "/contests/detail/"+cid.String())
 }
 
 // QuestionsDetail default implementation.
