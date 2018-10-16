@@ -1,7 +1,12 @@
 package actions
 
 import (
+	"bytes"
 	"fmt"
+	"io/ioutil"
+	"os"
+	"os/exec"
+	"strings"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
@@ -69,6 +74,7 @@ func SubmissionsCreatePost(c buffalo.Context) error {
 	}
 
 	submission.QuestionID = questionID
+	submission.Status = "Pending"
 
 	verrs, err := tx.ValidateAndCreate(submission)
 	if err != nil {
@@ -92,7 +98,24 @@ func SubmissionsCreatePost(c buffalo.Context) error {
 		for i := 0; i < len(submissions); i++ {
 			fmt.Println("\n\nFound!!!\n\n")
 			submission := submissions[i]
-			submission.SubmissionPath = "../submission/submission_" + submission.ID.String()
+			submission.SubmissionPath = "../submissions/submission_" + submission.ID.String() + ".c"
+			tx.ValidateAndSave(&submission)
+			fmt.Print("Success!\n")
+			//fmt.Printf("%v\n", user)
+		}
+	}
+
+	query = tx.Where("status = 'Pending'")
+	submissions = []models.Submission{}
+	err = query.All(&submissions)
+	if err != nil {
+		fmt.Print("\n\nAll filled!!\n\n")
+		fmt.Printf("%v\n", err)
+	} else {
+		for i := 0; i < len(submissions); i++ {
+			fmt.Println("\n\nFound!!!\n\n")
+			submission := submissions[i]
+			submission.Status = EvaluateSubmission(c, submission.SubmissionPath, questionID)
 			tx.ValidateAndSave(&submission)
 			fmt.Print("Success!\n")
 			//fmt.Printf("%v\n", user)
@@ -106,4 +129,89 @@ func SubmissionsCreatePost(c buffalo.Context) error {
 // SubmissionsDetail default implementation.
 func SubmissionsDetail(c buffalo.Context) error {
 	return c.Render(200, r.HTML("submissions/detail.html"))
+}
+
+func EvaluateSubmission(c buffalo.Context, submissionPath string, questionId uuid.UUID) string {
+	//query := tx.Where("question_id = (?)", questionId.String())
+
+	// Get the DB connection from the context
+	tx := c.Value("tx").(*pop.Connection)
+	question := &models.Question{}
+	err := tx.Find(question, questionId)
+	if err != nil {
+		fmt.Print("\n\nNo question with this id found!!\n\n")
+		return "Some error occured"
+	} else {
+		testCasesPath := question.TestCasesPath
+
+		// Compile code
+		compile := exec.Command("gcc", submissionPath)
+		err := compile.Run()
+		if err != nil {
+			return "Compilation error"
+		}
+
+		// Test cases inputs
+		inputTestCaseFiles, err := ioutil.ReadDir(testCasesPath + "/inputs/")
+		if err != nil {
+			fmt.Println("\n\nInput test cases could not be read\n\n")
+			return "Some error occurred"
+		}
+
+		// Test cases answers
+		answerTestCaseFiles, err := ioutil.ReadDir(testCasesPath + "/answers/")
+		if err != nil {
+			fmt.Println("\n\nAnswers of test cases could not be read\n\n")
+			return "Some error occurred"
+		}
+
+		// Number of input test cases
+		numInputTestCaseFiles := len(inputTestCaseFiles)
+
+		// Number of test cases answers
+		numAnswersTestCaseFiles := len(answerTestCaseFiles)
+
+		if numInputTestCaseFiles != numAnswersTestCaseFiles {
+			fmt.Printf("Number of input files and answer files in test case folder are not equal.")
+			return "Some error occurred"
+		}
+
+		for i := 0; i < numInputTestCaseFiles; i++ {
+
+			input, err := os.Open(testCasesPath + "/inputs/" + inputTestCaseFiles[i].Name())
+			if err != nil {
+				fmt.Println("\n\nCould not read input test case file\n\n")
+				return "Some error occurred"
+			}
+
+			cmd := exec.Command("./a.out")
+			cmd.Stdin = input
+			var out bytes.Buffer
+			cmd.Stdout = &out
+			err = cmd.Run()
+			if err != nil {
+				return "Execution error"
+			}
+
+			outputString := out.String()
+			outputString = strings.Trim(outputString, "\n")
+			// fmt.Printf("Output: %q\n", outputString)
+
+			dat, err := ioutil.ReadFile(testCasesPath + "/answers/" + answerTestCaseFiles[i].Name())
+			if err != nil {
+				fmt.Println("\n\nCould not read answer test case file\n\n")
+				return "Some error occurred"
+			}
+
+			answerString := string(dat)
+			answerString = strings.Trim(answerString, "\n")
+			//fmt.Printf("%q\n", answerString)
+
+			if strings.Compare(outputString, answerString) != 0 {
+				return "Wrong answer"
+			}
+
+		}
+	}
+	return "Correct answer"
 }

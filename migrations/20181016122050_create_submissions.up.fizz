@@ -3,4 +3,5 @@ create_table("submissions", func(t) {
 	t.Column("question_id", "uuid", {})
     t.Column("user_id", "uuid", {})
 	t.Column("submission_path", "string", {"default": ""})
+	t.Column("status", "string", {"default": "Pending"})
 })

@@ -96,6 +96,7 @@ CREATE TABLE `submissions` (
   `question_id` char(36) NOT NULL,
   `user_id` char(36) NOT NULL,
   `submission_path` varchar(255) NOT NULL DEFAULT '',
+  `status` varchar(255) NOT NULL DEFAULT 'Pending',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
@@ -130,4 +131,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-16 17:53:49
+-- Dump completed on 2018-10-16 18:34:17

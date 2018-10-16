@@ -21,6 +21,7 @@ type Submission struct {
 	QuestionID     uuid.UUID    `json:"question_id" db:"question_id"`
 	SubmissionFile binding.File `json:"submission_file" db:"-" form:"SubmissionFile"`
 	SubmissionPath string       `json:"submission_path" db:"submission_path"`
+	Status string `json:"status" db:"status"`
 }
 
 type Submissions []Submission
