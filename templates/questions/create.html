@@ -1,0 +1,44 @@
+<div class="row">
+    <div class="col">
+        <%= if (errors) { %>
+            <%= for (key, val) in errors { %>
+                <div class="alert alert-danger alert-dismissible fade show m-1" role="alert">
+                    <%= val %>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            <% } %>
+        <% } %>
+    </div>
+</div>
+<div class="row mt-3 justify-description-center">
+    <div class="col-md-8 col-sm-10">
+        <h2>Create a new question</h2>
+        <form action="<%= questionsCreatePath({cid: contest.ID}) %> " enctype="multipart/form-data" method="POST">
+            <%= csrf() %>
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" name="Title" class="form-control" id="title" value="<%= question.Title %>">
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" name="Description" id="description"  rows="5"><%= question.Description %></textarea>
+            </div>
+            <h2>Instructions to upload test cases</h2>
+            <ol>
+                <li>Test cases folder should have the name 'testcases'</li>
+                <li>'testcases' folder should contain two folders 'inputs' and 'answers'</li>
+                <li>The files in these folders should be named as 1.txt, 2.txt and so on. For example, 3.txt in 'answers' folder is the answer for 3.txt input test case in 'inputs' folder</li>
+                <li>Compress 'testcases' folder to 'testcases.zip' and upload</li>
+            </ol>
+            
+            <div class="form-group">
+                <!-- <label for="test_cases_zip_file">Upload test cases</label> -->
+                <h4>Upload test cases</h4>
+                <input class="form control" type="file" name="TestCasesZipFile" accept=".zip" id="test_cases_zip_file" value="<%= question.TestCasesZipFile %>">
+            </div>
+            <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+    </div>
+</div>

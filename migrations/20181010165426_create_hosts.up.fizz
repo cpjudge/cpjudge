@@ -1,0 +1,6 @@
+create_table("hosts") {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("hostname", "string", {})
+	t.Column("email", "string", {})
+	t.Column("admin", "boolean", {})
+}

@@ -1,0 +1,19 @@
+<div class="page-header">
+  <h1>Host#Show</h1>
+</div>
+
+<ul class="list-unstyled list-inline">
+  <li class="list-inline-item"><a href="<%= hostsPath() %>" class="btn btn-info">Back to all Hosts</a></li>
+  <li class="list-inline-item"><a href="<%= editHostPath({ host_id: host.ID })%>" class="btn btn-warning">Edit</a></li>
+  <li class="list-inline-item"><a href="<%= hostPath({ host_id: host.ID })%>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+</ul>
+
+<p>
+  <strong>Hostname</strong>: <%= host.Hostname %>
+</p>
+<p>
+  <strong>Email</strong>: <%= host.Email %>
+</p>
+<p>
+  <strong>Admin</strong>: <%= host.Admin %>
+</p>
