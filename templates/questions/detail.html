@@ -17,12 +17,5 @@
         <p>Contest: <span class="author"><%= contest.Title %></span></p>
         <p><%= markdown(question.Description) %></p>
 
-        <form action="<%= submissionsCreatePath({qid: question.ID}) %> " enctype="multipart/form-data" method="POST"></form>
-            <div class="form-group">
-                <h4>Upload code</h4>
-                <input class="form control" type="file" name="SubmissionFile" accept=".c" id="submission_file" value="<%= submission.SubmissionFile %>">
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
     </div>
 </div>

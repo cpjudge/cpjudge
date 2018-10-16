@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/shashankp/cpjudge/actions"
+	"github.com/cpjudge/cpjudge/actions"
 )
 
 // main is the starting point to your Buffalo application.

@@ -10,7 +10,7 @@ import (
 	"github.com/gobuffalo/buffalo/middleware/csrf"
 	"github.com/gobuffalo/buffalo/middleware/i18n"
 	"github.com/gobuffalo/packr"
-	"github.com/shashankp/cpjudge/models"
+	"github.com/cpjudge/cpjudge/models"
 )
 
 // ENV is used to help switch settings based on where the
@@ -88,7 +88,7 @@ func App() *buffalo.App {
 		questionGroup.GET("/delete/{qid}", HostRequired(QuestionsDelete))
 
 		submissionGroup := app.Group("/submissions")
-		submissionGroup.GET("/index", SubmissionsIndex)
+		submissionGroup.GET("/index/{qid}", SubmissionsIndex)
 		submissionGroup.GET("/create/{qid}", SubmissionsCreateGet)
 		submissionGroup.POST("/create/{qid}", SubmissionsCreatePost)
 		app.ServeFiles("/", assetsBox) // serve files from the public directory

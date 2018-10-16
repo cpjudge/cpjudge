@@ -1,1 +1,30 @@
-<h1>Submissions#Index</h1>
+
+
+<div class="row">
+    <table class="table">
+    <thead class="thead-dark">       
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Submitted on (UTC)</th>
+            <th scope="col">Question Id</th>
+            <th scope="col">Status</th>
+        </tr>
+    </thead>
+    <div class="col-md-8">
+        <%= for (s) in submissions { %>
+            <tr>
+                <td><%= s.ID %></td>
+                <td><%= s.CreatedAt %></td>
+                <td><%= s.QuestionID %></td>
+                <td><%= s.Status %></td>
+            </tr>
+        <% } %>
+    </div>
+    </tbody>
+    </table>
+</div>
+<div class="row">
+    <div class="col">
+        <%= paginator(pagination) %>
+    </div>
+</div>

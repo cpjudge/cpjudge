@@ -8,7 +8,7 @@ import (
 	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/uuid"
 	"github.com/pkg/errors"
-	"github.com/shashankp/cpjudge/models"
+	"github.com/cpjudge/cpjudge/models"
 )
 
 // QuestionsIndex default implementation.

@@ -7,7 +7,7 @@ import (
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
 	"github.com/pkg/errors"
-	"github.com/shashankp/cpjudge/models"
+	"github.com/cpjudge/cpjudge/models"
 )
 
 // ContestsIndex default implementation.
@@ -17,7 +17,7 @@ func ContestsUserIndex(c buffalo.Context) error {
 	contests := &models.Contests{}
 	// Paginate results. Params "page" and "per_page" control pagination.
 	// Default values are "page=1" and "per_page=20".
-	q := tx.PaginateFromParams(c.Params())
+	q := tx.Order("created_at desc").PaginateFromParams(c.Params())
 	// Retrieve all Contests from the DB
 	if err := q.All(contests); err != nil {
 		return errors.WithStack(err)
@@ -100,7 +100,7 @@ func ContestsDetail(c buffalo.Context) error {
 	question := &models.Question{}
 	c.Set("question", question)
 	questions := models.Questions{}
-	qPage := tx.PaginateFromParams(c.Params())
+	qPage := tx.Order("created_at desc").PaginateFromParams(c.Params())
 	if err := qPage.BelongsTo(contest).All(&questions); err != nil {
 		return errors.WithStack(err)
 	}

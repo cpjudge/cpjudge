@@ -5,7 +5,7 @@ import (
 	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/validate"
 	"github.com/pkg/errors"
-	"github.com/shashankp/cpjudge/models"
+	"github.com/cpjudge/cpjudge/models"
 )
 
 // HostRegisterGet displays a register form

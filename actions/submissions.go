@@ -12,7 +12,7 @@ import (
 	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/uuid"
 	"github.com/pkg/errors"
-	"github.com/shashankp/cpjudge/models"
+	"github.com/cpjudge/cpjudge/models"
 )
 
 // SubmissionsIndex default implementation.
@@ -24,11 +24,22 @@ func SubmissionsIndex(c buffalo.Context) error {
 	submissions := &models.Submissions{}
 	// Paginate results. Params "page" and "per_page" control pagination.
 	// Default values are "page=1" and "per_page=20".
-	q := tx.PaginateFromParams(c.Params())
+	q := tx.Order("created_at desc").PaginateFromParams(c.Params())
 	// Retrieve all Submissions from the DB
 	if err := q.BelongsTo(user).All(submissions); err != nil {
 		return errors.WithStack(err)
 	}
+
+	questionID, err := uuid.FromString(c.Param("qid"))
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	question := &models.Question{}
+	err = tx.Find(question, questionID)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	
 	// Make submissions available inside the html template
 	c.Set("submissions", submissions)
 	// Add the paginator to the context so it can be used in the template.
@@ -123,7 +134,7 @@ func SubmissionsCreatePost(c buffalo.Context) error {
 	}
 
 	// and redirect to the index page
-	return c.Redirect(302, "/submissions/index")
+	return c.Redirect(302, "/submissions/index/%s", c.Param("qid"))
 }
 
 // SubmissionsDetail default implementation.
