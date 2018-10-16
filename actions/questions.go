@@ -48,8 +48,6 @@ func QuestionsCreatePost(c buffalo.Context) error {
 		return errors.WithStack(err)
 	}
 
-	fmt.Println(question)
-
 	question.ContestID = contestID
 
 	//testCasesFile, err := c.File("someFile")
@@ -178,6 +176,7 @@ func QuestionsDetail(c buffalo.Context) error {
 	if err := tx.Find(contest, question.ContestID); err != nil {
 		return c.Error(404, err)
 	}
+
 	c.Set("question", question)
 	c.Set("contest", contest)
 	return c.Render(200, r.HTML("questions/detail.html"))

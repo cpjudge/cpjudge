@@ -85,6 +85,24 @@ CREATE TABLE `schema_migration` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `submissions`
+--
+
+DROP TABLE IF EXISTS `submissions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `submissions` (
+  `id` char(36) NOT NULL,
+  `question_id` char(36) NOT NULL,
+  `user_id` char(36) NOT NULL,
+  `submission_path` varchar(255) NOT NULL DEFAULT '',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `users`
 --
 
@@ -112,4 +130,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-15 10:43:42
+-- Dump completed on 2018-10-16 17:53:49

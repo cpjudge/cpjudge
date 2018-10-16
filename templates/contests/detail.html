@@ -25,7 +25,11 @@
     <div class="col-md-8">
         <%= for (q) in questions { %>
             <hr>
-            <a href="<%= questionsDetailPath({qid: q.ID}) %>"><h1><%= q.Title %></h1></a>
+            <%= if (current_host) { %>
+                <a href="<%= questionsDetailPath({qid: q.ID}) %>"><h1><%= q.Title %></h1></a>
+            <% } else if (current_user) { %>
+                <a href="<%= submissionsCreatePath({qid: q.ID}) %>"><h1><%= q.Title %></h1></a>
+            <% } %>
             <p><%= markdown(truncate(q.Description, {"size": 200})) %></p>
         <% } %>
     </div>

@@ -1,0 +1,6 @@
+create_table("submissions", func(t) {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("question_id", "uuid", {})
+    t.Column("user_id", "uuid", {})
+	t.Column("submission_path", "string", {"default": ""})
+})

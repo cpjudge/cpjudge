@@ -63,10 +63,11 @@ func ContestsCreatePost(c buffalo.Context) error {
 	if err := c.Bind(contest); err != nil {
 		return errors.WithStack(err)
 	}
+	contest.HostID = host.ID
 	// Get the DB connection from the context
 	tx := c.Value("tx").(*pop.Connection)
 	// Validate the data from the html form
-	contest.HostID = host.ID
+
 	verrs, err := tx.ValidateAndCreate(contest)
 	if err != nil {
 		return errors.WithStack(err)
