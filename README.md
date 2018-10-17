@@ -1,27 +1,20 @@
-# Code-Judge
+# CP-Judge
 Online Programming Judge in GO
 
 This application uses [GoBuffalo](https://gobuffalo.io/) framework. 
 
-## Bootstrap 4
-Run 
-`yarn add bootstrap@4.0.0-beta.2` 
-and
-`yarn add popper.js` 
+## Installing Dependencies
+Use `yarn install` to install all the required packages
 
 ## Database
 
-MySQL database is used in this application
+The application uses MySQL database. Configure the mysql user and database in `database.yml`.
 
-Change your mysql username and password in the file `database.yml`. You can also change the databases' name. Currently the database name is `gocoder_dev`
-
-#### To create database 
+#### To create databases 
 Run `buffalo db create -a`
 
 #### To create tables in your database
 Run `buffalo db migrate up`
-
-Now your database should be ready with the required tables.
 
 ## To run the application
 Run `buffalo dev run`
