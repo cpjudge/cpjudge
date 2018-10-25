@@ -48,16 +48,6 @@ func SubmissionsIndex(c buffalo.Context) error {
 		return errors.WithStack(err)
 	}
 
-	questionID, err := uuid.FromString(c.Param("qid"))
-	if err != nil {
-		return errors.WithStack(err)
-	}
-	question := &models.Question{}
-	err = tx.Find(question, questionID)
-	if err != nil {
-		return errors.WithStack(err)
-	}
-
 	// Make submissions available inside the html template
 	c.Set("submissions", submissions)
 	// Add the paginator to the context so it can be used in the template.
@@ -152,11 +142,17 @@ func SubmissionsCreatePost(c buffalo.Context) error {
 	}
 
 	// and redirect to the index page
-	return c.Redirect(302, "/submissions/index/%s", c.Param("qid"))
+	return c.Redirect(302, "/submissions/detail/%s", submission.ID)
 }
 
 // SubmissionsDetail default implementation.
 func SubmissionsDetail(c buffalo.Context) error {
+	tx := c.Value("tx").(*pop.Connection)
+	submission := &models.Submission{}
+	if err := tx.Find(submission, c.Param("sid")); err != nil {
+		return c.Error(404, err)
+	}
+	c.Set("submission", submission)
 	return c.Render(200, r.HTML("submissions/detail.html"))
 }
 

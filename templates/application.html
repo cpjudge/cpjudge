@@ -34,6 +34,11 @@
                     <a class="nav-link" href="<%= contestsUserIndexPath() %>">Contests</a>
                 </li>
             <% } %>
+            <%= if (current_user) { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="<%= submissionsIndexPath() %>">My Submissions</a>
+                </li>
+            <% } %>
             </ul>
             <ul class="navbar-nav">
             <%= if (current_user) { %>
