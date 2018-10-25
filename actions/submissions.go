@@ -216,7 +216,6 @@ func EvaluateSubmission(c buffalo.Context, submissionPath string, questionId uui
 
 			if err := cmd.Start(); err != nil {
 				log.Println(err)
-				return "Runtime Error"
 			}
 
 			done := make(chan error, 1)
@@ -234,6 +233,7 @@ func EvaluateSubmission(c buffalo.Context, submissionPath string, questionId uui
 			case err := <-done:
 				if err != nil {
 					log.Println("process finished with error = %v", err)
+					return "Runtime Error"
 				}
 				log.Print("process finished successfully")
 
