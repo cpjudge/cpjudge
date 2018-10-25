@@ -4,9 +4,11 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"os/exec"
 	"strings"
+	"time"
 
 	"github.com/cpjudge/cpjudge/models"
 	"github.com/gobuffalo/buffalo"
@@ -14,6 +16,22 @@ import (
 	"github.com/gobuffalo/uuid"
 	"github.com/pkg/errors"
 )
+
+func printCommand(cmd *exec.Cmd) {
+	fmt.Printf("==> Executing: %s\n", strings.Join(cmd.Args, " "))
+}
+
+func printError(err error) {
+	if err != nil {
+		os.Stderr.WriteString(fmt.Sprintf("==> Error: %s\n", err.Error()))
+	}
+}
+
+func printOutput(outs []byte) {
+	if len(outs) > 0 {
+		fmt.Printf("==> Output: %s\n", string(outs))
+	}
+}
 
 // SubmissionsIndex default implementation.
 func SubmissionsIndex(c buffalo.Context) error {
@@ -195,29 +213,48 @@ func EvaluateSubmission(c buffalo.Context, submissionPath string, questionId uui
 			cmd.Stdin = input
 			var out bytes.Buffer
 			cmd.Stdout = &out
-			err = cmd.Run()
-			if err != nil {
-				return "Execution error"
+
+			if err := cmd.Start(); err != nil {
+				log.Println(err)
 			}
 
-			outputString := out.String()
-			outputString = strings.Trim(outputString, "\n")
-			// fmt.Printf("Output: %q\n", outputString)
+			done := make(chan error, 1)
+			go func() {
+				done <- cmd.Wait()
+			}()
+			select {
+			case <-time.After(3 * time.Second): //TODO : Take time limit from question
+				if err := cmd.Process.Kill(); err != nil {
+					log.Println("failed to kill process: ", err)
+					return "System Error"
+				}
+				log.Println("process killed as timeout reached")
+				return "Time Limit Exceeded"
+			case err := <-done:
+				if err != nil {
+					log.Println("process finished with error = %v", err)
+					return "Runtime Error"
+				}
+				log.Print("process finished successfully")
 
-			dat, err := ioutil.ReadFile(testCasesPath + "/answers/" + answerTestCaseFiles[i].Name())
-			if err != nil {
-				fmt.Println("\n\nCould not read answer test case file\n\n")
-				return "Some error occurred"
+				outputString := out.String()
+				outputString = strings.Trim(outputString, "\n")
+				// fmt.Printf("Output: %q\n", outputString)
+
+				dat, err := ioutil.ReadFile(testCasesPath + "/answers/" + answerTestCaseFiles[i].Name())
+				if err != nil {
+					fmt.Println("\n\nCould not read answer test case file")
+					return "Some error occurred"
+				}
+
+				answerString := string(dat)
+				answerString = strings.Trim(answerString, "\n")
+				//fmt.Printf("%q\n", answerString)
+
+				if strings.Compare(outputString, answerString) != 0 {
+					return "Wrong answer"
+				}
 			}
-
-			answerString := string(dat)
-			answerString = strings.Trim(answerString, "\n")
-			//fmt.Printf("%q\n", answerString)
-
-			if strings.Compare(outputString, answerString) != 0 {
-				return "Wrong answer"
-			}
-
 		}
 	}
 	return "Correct answer"
