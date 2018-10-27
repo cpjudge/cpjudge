@@ -7,10 +7,11 @@
     </div>
 <% } %>
 <div class="row">
-    <div class="col-md-8 offset-md-2">
-        <h1 class="text-center"><%= contest.Title %></h1>
-        <p>by <span class="author"><%= host.Hostname %></span></p>
+    <div class="col-md-8 offset-md-2 text-center">
+        <h1 class="text-center"><%= humanize(contest.Title) %></h1>
+        <p>by <span class="author"><%= humanize(host.Hostname) %></span></p>
         <p><%= markdown(contest.Description) %></p>
+        <a href="<%= leaderboardDisplayPath({cid: contest.ID}) %>" class="btn btn-primary">Leaderboard</a>
     </div>
 </div>
 <div class="row">
@@ -20,15 +21,14 @@
         <% } %>
     </div>
 </div>
-
 <div class="row">
     <div class="col-md-8">
         <%= for (q) in questions { %>
             <hr>
             <%= if (current_host) { %>
-                <a href="<%= questionsDetailPath({qid: q.ID}) %>"><h1><%= q.Title %></h1></a>
+                <a href="<%= questionsDetailPath({qid: q.ID}) %>"><h1><%= humanize(q.Title) %></h1></a>
             <% } else if (current_user) { %>
-                <a href="<%= submissionsCreatePath({qid: q.ID}) %>"><h1><%= q.Title %></h1></a>
+                <a href="<%= submissionsCreatePath({cid:q.ContestID, qid: q.ID}) %>"><h1><%= humanize(q.Title) %></h1></a>
             <% } %>
             <p><%= markdown(truncate(q.Description, {"size": 200})) %></p>
         <% } %>

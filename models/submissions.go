@@ -19,9 +19,10 @@ type Submission struct {
 	UpdatedAt      time.Time    `json:"updated_at" db:"updated_at"`
 	UserID         uuid.UUID    `json:"user_id" db:"user_id"`
 	QuestionID     uuid.UUID    `json:"question_id" db:"question_id"`
+	ContestID      uuid.UUID    `json:"contest_id" db:"contest_id"`
 	SubmissionFile binding.File `json:"submission_file" db:"-" form:"SubmissionFile"`
 	SubmissionPath string       `json:"submission_path" db:"submission_path"`
-	Status string `json:"status" db:"status"`
+	Status         string       `json:"status" db:"status"`
 }
 
 type Submissions []Submission

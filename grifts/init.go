@@ -1,8 +1,8 @@
 package grifts
 
 import (
-	"github.com/gobuffalo/buffalo"
 	"github.com/cpjudge/cpjudge/actions"
+	"github.com/gobuffalo/buffalo"
 )
 
 func init() {

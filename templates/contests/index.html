@@ -9,7 +9,7 @@
     <div class="col-md-8">
         <%= for (c) in contests { %>
             <hr>
-            <a href="<%= contestsDetailPath({cid: c.ID}) %>"><h1><%= c.Title %></h1></a>
+            <a href="<%= contestsDetailPath({cid: c.ID}) %>"><h1><%= humanize(c.Title) %></h1></a>
             <p><%= markdown(truncate(c.Description, {"size": 200})) %></p>
         <% } %>
     </div>

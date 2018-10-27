@@ -94,6 +94,7 @@ DROP TABLE IF EXISTS `submissions`;
 CREATE TABLE `submissions` (
   `id` char(36) NOT NULL,
   `question_id` char(36) NOT NULL,
+  `contest_id` char(36) NOT NULL,
   `user_id` char(36) NOT NULL,
   `submission_path` varchar(255) NOT NULL DEFAULT '',
   `status` varchar(255) NOT NULL DEFAULT 'Pending',
@@ -131,4 +132,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-16 23:06:36
+-- Dump completed on 2018-10-25 18:36:24
