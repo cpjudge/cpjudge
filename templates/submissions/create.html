@@ -7,11 +7,11 @@
 
 <div class="row">
     <div class="col-md-8 offset-md-2">
-        <h1 class="text-center"><%= question.Title %></h1>
-        <p>Contest: <span class="author"><%= contest.Title %></span></p>
+        <h1 class="text-center"><%= humanize(question.Title) %></h1>
+        <p>Contest: <span class="author"><%= humanize(contest.Title) %></span></p>
         <p><%= markdown(question.Description) %></p>
 
-        <form action="<%= submissionsCreatePath({qid: question.ID}) %> " enctype="multipart/form-data" method="POST">
+        <form action="<%= submissionsCreatePath({qid: question.ID, cid: question.ContestID}) %> " enctype="multipart/form-data" method="POST">
             <%= csrf() %>
             <div class="form-group">
                 

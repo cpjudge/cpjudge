@@ -1,0 +1,28 @@
+<h1>Leaderboard - <%= contest_name %></h1>
+
+<div class="container mt-5">
+    <div class="row">
+        <table class="table">
+        <thead class="thead-dark">       
+            <tr>
+                <th scope="col">User</th>
+                <th scope="col">Correct Submissions</th>
+                <th scope="col">Wrong/TLE submissions</th>
+            </tr>
+        </thead>
+        <script>
+            console.log(<%= leaderboard %>)
+        </script>
+        <div class="col-md-8">
+            <%= for (entry) in leaderboard { %>
+                <tr>
+                    <td><%= entry.User %></td>
+                    <td><%= entry.Correct %></td>
+                    <td><%= entry.Wrong %></td>
+                </tr>
+            <% } %>
+        </div>
+        </tbody>
+        </table>
+    </div>
+</div>

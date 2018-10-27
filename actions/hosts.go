@@ -1,11 +1,11 @@
 package actions
 
 import (
+	"github.com/cpjudge/cpjudge/models"
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/validate"
 	"github.com/pkg/errors"
-	"github.com/cpjudge/cpjudge/models"
 )
 
 // HostRegisterGet displays a register form

@@ -91,10 +91,14 @@ func SubmissionsCreatePost(c buffalo.Context) error {
 	if err != nil {
 		return errors.WithStack(err)
 	}
+	contestID, err := uuid.FromString(c.Param("cid"))
+	if err != nil {
+		return errors.WithStack(err)
+	}
 
 	submission.QuestionID = questionID
 	submission.Status = "Pending"
-
+	submission.ContestID = contestID
 	verrs, err := tx.ValidateAndCreate(submission)
 	if err != nil {
 		return errors.WithStack(err)
@@ -244,7 +248,7 @@ func EvaluateSubmission(c buffalo.Context, submissionPath string, questionId uui
 				dat, err := ioutil.ReadFile(testCasesPath + "/answers/" + answerTestCaseFiles[i].Name())
 				if err != nil {
 					fmt.Println("\n\nCould not read answer test case file")
-					return "Some error occurred"
+					return "System Error"
 				}
 
 				answerString := string(dat)

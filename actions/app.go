@@ -89,9 +89,10 @@ func App() *buffalo.App {
 
 		submissionGroup := app.Group("/submissions")
 		submissionGroup.GET("/index", SubmissionsIndex)
-		submissionGroup.GET("/create/{qid}", SubmissionsCreateGet)
-		submissionGroup.POST("/create/{qid}", SubmissionsCreatePost)
+		submissionGroup.GET("/create/{cid}/{qid}", SubmissionsCreateGet)
+		submissionGroup.POST("/create/{cid}/{qid}", SubmissionsCreatePost)
 		submissionGroup.GET("/detail/{sid}", SubmissionsDetail)
+		app.GET("/leaderboard/display/{cid}", LeaderboardDisplay)
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}
 

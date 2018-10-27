@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/cpjudge/cpjudge/models"
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/uuid"
 	"github.com/pkg/errors"
-	"github.com/cpjudge/cpjudge/models"
 )
 
 // QuestionsIndex default implementation.
