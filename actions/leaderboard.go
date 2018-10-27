@@ -6,14 +6,14 @@ import (
 	"github.com/cpjudge/cpjudge/models"
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
-	"github.com/gobuffalo/uuid"
 	"github.com/pkg/errors"
 )
 
 type SubmissionCount struct {
-	User    uuid.UUID `json:"user"`
-	Correct int       `json:"correct" default:"0"`
-	Wrong   int       `json:"wrong" default:"0"`
+	// User     uuid.UUID `json:"user"`
+	Username string `json:"username"`
+	Correct  int    `json:"correct" default:"0"`
+	Wrong    int    `json:"wrong" default:"0"`
 }
 
 // LeaderboardDisplay default implementation.
@@ -29,19 +29,24 @@ func LeaderboardDisplay(c buffalo.Context) error {
 		return errors.WithStack(err)
 	}
 
-	userMap := make(map[uuid.UUID]*SubmissionCount)
+	userMap := make(map[string]*SubmissionCount)
 	var Leaderboard []SubmissionCount
 
 	for _, submission := range submissions {
-		if _, ok := userMap[submission.UserID]; !ok {
-			userMap[submission.UserID] = new(SubmissionCount)
+		user := &models.User{}
+		if err := tx.Find(user, submission.UserID); err != nil {
+			return errors.WithStack(err)
+		}
+
+		if _, ok := userMap[user.Username]; !ok {
+			userMap[user.Username] = new(SubmissionCount)
 		}
 		if submission.Status == "Correct answer" {
-			userMap[submission.UserID].Correct++
+			userMap[user.Username].Correct++
 		} else if submission.Status == "Runtime Error" ||
 			submission.Status == "Wrong Answer" ||
 			submission.Status == "Time Limit Exceeded" {
-			userMap[submission.UserID].Wrong++
+			userMap[user.Username].Wrong++
 		}
 	}
 
