@@ -7,6 +7,7 @@ const ManifestPlugin = require("webpack-manifest-plugin");
 const CleanObsoleteChunks = require('webpack-clean-obsolete-chunks');
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const LiveReloadPlugin = require('webpack-livereload-plugin');
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 const configurator = {
   entries: function(){
@@ -45,7 +46,8 @@ const configurator = {
       new MiniCssExtractPlugin({filename: "[name].[contenthash].css"}),
       new CopyWebpackPlugin([{from: "./assets",to: ""}], {copyUnmodified: true,ignore: ["css/**", "js/**"] }),
       new Webpack.LoaderOptionsPlugin({minimize: true,debug: false}),
-      new ManifestPlugin({fileName: "manifest.json"})
+      new ManifestPlugin({fileName: "manifest.json"}),
+      new MonacoWebpackPlugin()
     ];
 
     return plugins
@@ -66,7 +68,11 @@ const configurator = {
         { test: /\.(woff|woff2|ttf|svg)(\?v=\d+\.\d+\.\d+)?$/,use: "url-loader"},
         { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,use: "file-loader" },
         { test: require.resolve("jquery"),use: "expose-loader?jQuery!expose-loader?$"},
-        { test: /\.go$/, use: "gopherjs-loader"}
+        { test: /\.go$/, use: "gopherjs-loader"},
+        {
+          test: /\.css$/,
+          use: ['css-loader']
+        }
       ]
     }
   },

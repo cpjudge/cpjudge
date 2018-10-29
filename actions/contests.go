@@ -80,7 +80,7 @@ func ContestsCreatePost(c buffalo.Context) error {
 	// If there are no errors set a success message
 	c.Flash().Add("success", "New contest added successfully.")
 	// and redirect to the index page
-	return c.Redirect(302, "host_index")
+	return c.Redirect(302, "contests/host_index")
 }
 
 // ContestsDetail displays a single contest.
@@ -103,6 +103,7 @@ func ContestsDetail(c buffalo.Context) error {
 	qPage := tx.Order("created_at desc").PaginateFromParams(c.Params())
 	if err := qPage.BelongsTo(contest).All(&questions); err != nil {
 		return errors.WithStack(err)
+		
 	}
 	for i := 0; i < len(questions); i++ {
 		contest := models.Contest{}

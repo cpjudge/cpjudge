@@ -13,6 +13,9 @@
 
         <form action="<%= submissionsCreatePath({qid: question.ID, cid: question.ContestID}) %> " enctype="multipart/form-data" method="POST">
             <%= csrf() %>
+
+            <div id="monaco-editor" style="width:800px;height:600px;border:1px solid grey"></div>
+            
             <div class="form-group">
                 
                 <h4>Upload code</h4>
@@ -22,3 +25,5 @@
         </form>
     </div>
 </div>
+
+<%= javascriptTag("monaco-editor.js") %>
