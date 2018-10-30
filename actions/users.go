@@ -41,7 +41,7 @@ func UsersRegisterPost(c buffalo.Context) error {
 		return c.Render(422, r.HTML("users/register.html"))
 	}
 	// If there are no errors set a success message
-	c.Flash().Add("success", "Account created successfully.")
+	c.Flash().Add("success", "Account created successfully. Proceed to Login.")
 	// and redirect to the home page
 	return c.Redirect(302, "/")
 }

@@ -1,8 +1,8 @@
 <div class="page-header">
-  <h1>Edit Host</h1>
+    <h1>Edit Host</h1>
 </div>
 
 <%= form_for(host, {action: hostPath({ host_id: host.ID }), method: "PUT"}) { %>
-  <%= partial("hosts/form.html") %>
-  <a href="<%= hostPath({ host_id: host.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+<%= partial("hosts/form.html") %>
+<a href="<%= hostPath({ host_id: host.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
 <% } %>

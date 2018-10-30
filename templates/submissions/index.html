@@ -1,25 +1,36 @@
 <div class="container mt-5">
+    <div class="col text-center">
+        <h2>User Submissions</h2>
+    </div>
     <div class="row">
         <table class="table">
-        <thead class="thead-dark">       
-            <tr>
-                <th scope="col">Submission ID</th>
-                <th scope="col">Submitted on (UTC)</th>
-                <th scope="col">Question ID</th>
-                <th scope="col">Status</th>
-            </tr>
-        </thead>
-        <div class="col-md-8">
-            <%= for (s) in submissions { %>
+            <thead class="thead-dark">
                 <tr>
-                    <td><%= s.ID %></td>
-                    <td><%= s.CreatedAt %></td>
-                    <td><%= s.QuestionID %></td>
-                    <td><%= s.Status %></td>
+                    <th scope="col">Submission ID</th>
+                    <th scope="col">Submitted on (UTC)</th>
+                    <th scope="col">Question ID</th>
+                    <th scope="col">Status</th>
                 </tr>
-            <% } %>
-        </div>
-        </tbody>
+            </thead>
+            <div class="col-md-8">
+                <%= for (s) in submissions { %>
+                <tr>
+                    <td>
+                        <%= s.ID %>
+                    </td>
+                    <td>
+                        <%= s.CreatedAt %>
+                    </td>
+                    <td>
+                        <%= s.QuestionID %>
+                    </td>
+                    <td>
+                        <%= s.Status %>
+                    </td>
+                </tr>
+                <% } %>
+            </div>
+            </tbody>
         </table>
     </div>
     <div class="row">

@@ -1,24 +1,29 @@
-
-<div class="row">
-    <div class="col-md-4 offset-md-1">
-        <a href="<%= contestsDetailPath({cid: contest.ID}) %>" class="btn btn-success">Back to Contest</a>
-    </div>
+<div>
+    <a href="<%= contestsDetailPath({cid: contest.ID}) %>" class="btn btn-success">
+        <i class="fa fa-arrow-left"></i>
+        Back to Contest
+    </a>
 </div>
 
 <div class="row">
     <div class="col-md-8 offset-md-2">
-        <h1 class="text-center"><%= humanize(question.Title) %></h1>
-        <p>Contest: <span class="author"><%= humanize(contest.Title) %></span></p>
-        <p><%= markdown(question.Description) %></p>
+        <h1 class="text-center">Problem:
+            <%= humanize(question.Title) %>
+        </h1>
+        <p class="text-center">Contest: <span class="author">
+                <%= humanize(contest.Title) %></span></p>
+        <p class="mt-4 mb-4">
+            <%= markdown(question.Description) %>
+        </p>
 
-        <form action="<%= submissionsCreatePath({qid: question.ID, cid: question.ContestID}) %> " enctype="multipart/form-data" method="POST">
+        <form action="<%= submissionsCreatePath({qid: question.ID, cid: question.ContestID}) %> " enctype="multipart/form-data"
+            method="POST">
             <%= csrf() %>
-            <div class="form-group">
-                
-                <h4>Upload code</h4>
+            <div class="form-group mt-5">
+                <p>Upload C code submission:</p>
                 <input class="form control" type="file" name="SubmissionFile" accept=".c" id="submission_file" value="<%= submission.SubmissionFile %>">
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary w-25">Submit</button>
         </form>
     </div>
 </div>

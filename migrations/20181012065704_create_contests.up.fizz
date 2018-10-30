@@ -1,6 +1,6 @@
-create_table("contests", func(t) {
+create_table("contests") {
 	t.Column("id", "uuid", {"primary": true})
 	t.Column("title", "string", {})
 	t.Column("description", "text", {})
 	t.Column("host_id", "uuid", {})
-})
+}

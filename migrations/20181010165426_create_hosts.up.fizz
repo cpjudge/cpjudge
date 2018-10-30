@@ -3,4 +3,5 @@ create_table("hosts") {
 	t.Column("hostname", "string", {})
 	t.Column("email", "string", {})
 	t.Column("admin", "boolean", {})
+	t.Column("password_hash", "string", {"default": ""})
 }

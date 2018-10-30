@@ -46,7 +46,7 @@ func HostsRegisterPost(c buffalo.Context) error {
 		return c.Render(422, r.HTML("hosts/register.html"))
 	}
 	// If there are no errors set a success message
-	c.Flash().Add("success", "Account created successfully.")
+	c.Flash().Add("success", "Account created successfully. Proceed to Host Login")
 	// and redirect to the home page
 	return c.Redirect(302, "/")
 }
@@ -113,7 +113,7 @@ func HostRequired(next buffalo.Handler) buffalo.Handler {
 		if ok {
 			return next(c)
 		}
-		c.Flash().Add("danger", "You are not authorized to view that page.")
+		c.Flash().Add("danger", "You are not authorized to view that page. Please login as a host.")
 		return c.Redirect(302, "/")
 	}
 }

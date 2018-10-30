@@ -14,7 +14,7 @@
 </div>
 <div class="row mt-3 justify-content-center">
     <div class="col-md-8 col-sm-10">
-        <h2>Create a new contest</h2>
+        <h2 class="text-center">Create a new contest</h2>
         <form action="<%= contestsCreatePath() %>" method="POST">
             <%= csrf() %>
             <div class="form-group">
@@ -23,9 +23,9 @@
             </div>
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea class="form-control" name="Description" id="description"  rows="20"><%= contest.Description %></textarea>
+                <textarea class="form-control" name="Description" id="description" rows="10"><%= contest.Description %></textarea>
             </div>
-            <button type="submit" class="btn btn-success">Create Contest</button>
+            <button type="submit" class="btn btn-primary w-100">Create Contest</button>
         </form>
     </div>
 </div>
