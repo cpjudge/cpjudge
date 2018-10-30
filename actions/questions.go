@@ -26,7 +26,7 @@ func QuestionsCreateGet(c buffalo.Context) error {
 	}
 	// make sure the contest was made by the logged in host
 	if host.ID != contest.HostID {
-		c.Flash().Add("danger", "You are not authorized to view that page.")
+		c.Flash().Add("danger", "You are not authorized to view that page. Please login as host.")
 		return c.Redirect(302, "/contests/detail/%s", contest.ID)
 	}
 	c.Set("contest", contest)

@@ -1,7 +1,7 @@
-create_table("questions", func(t) {
+create_table("questions") {
 	t.Column("id", "uuid", {"primary": true})
 	t.Column("title", "string", {})
 	t.Column("description", "text", {})
 	t.Column("contest_id", "uuid", {})
 	t.Column("testcases_path", "string", {"default": ""})
-})
+}

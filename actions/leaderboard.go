@@ -41,10 +41,10 @@ func LeaderboardDisplay(c buffalo.Context) error {
 		if _, ok := userMap[user.Username]; !ok {
 			userMap[user.Username] = new(SubmissionCount)
 		}
-		if submission.Status == "Correct answer" {
+		if submission.Status == "Correct Answer" {
 			userMap[user.Username].Correct++
 		} else if submission.Status == "Runtime Error" ||
-			submission.Status == "Wrong Answer" ||
+			submission.Status == "Wrong answer" ||
 			submission.Status == "Time Limit Exceeded" {
 			userMap[user.Username].Wrong++
 		}

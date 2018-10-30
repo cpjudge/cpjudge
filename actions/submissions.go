@@ -261,5 +261,5 @@ func EvaluateSubmission(c buffalo.Context, submissionPath string, questionId uui
 			}
 		}
 	}
-	return "Correct answer"
+	return "Correct Answer"
 }

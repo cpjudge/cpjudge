@@ -1,21 +1,25 @@
-
-    <div class="row">
-        <div class="col-md-4 offset-md-1">
-            <a href="<%= contestsDetailPath({cid: contest.ID}) %>" class="btn btn-success">Back to Contest</a>
-        </div>
-        <%= if (current_host) { %>
-        <div class="col-md-4 offset-md-9">
-            <a href="<%= editQuestionsPath({qid: question.ID}) %>" class="btn btn-primary">Edit Question</a>
-            <a href="<%= questionsDeletePath({qid: question.ID}) %>" class="btn btn-danger">Delete Question</a>
-        </div>
-        <% } %>
-    </div>
+<div>
+    <a href="<%= contestsDetailPath({cid: contest.ID}) %>" class="btn btn-success">
+        <i class="fa fa-arrow-left"></i>
+        Back to Contest
+    </a>
+</div>
 
 <div class="row">
     <div class="col-md-8 offset-md-2">
-        <h1 class="text-center"><%= question.Title %></h1>
-        <p>Contest: <span class="author"><%= contest.Title %></span></p>
-        <p><%= markdown(question.Description) %></p>
+        <h2 class="text-center">
+            <%= humanize(question.Title) %>
+            <br>
+            <%= if (current_host) { %>
+            <a href="<%= editQuestionsPath({qid: question.ID}) %>"><i class="fa fa-edit text-success"></i></a>
+            <a href="<%= questionsDeletePath({qid: question.ID}) %>"><i class="fa fa-trash text-danger"></i></a>
+            <% } %>
+        </h2>
+        <p>Contest: <span class="author">
+                <%= humanize(contest.Title) %></span></p>
+        <p>
+            <%= markdown(question.Description) %>
+        </p>
 
     </div>
 </div>

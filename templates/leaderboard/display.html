@@ -1,28 +1,32 @@
-<h1>Leaderboard - <%= contest_name %></h1>
-
 <div class="container mt-5">
+    <h2 class="text-center">Leaderboard -
+        <%= contest_name %>
+    </h2>
     <div class="row">
         <table class="table">
-        <thead class="thead-dark">       
-            <tr>
-                <th scope="col">User</th>
-                <th scope="col">Correct Submissions</th>
-                <th scope="col">Wrong/TLE submissions</th>
-            </tr>
-        </thead>
-        <script>
-            console.log(<%= leaderboard %>)
-        </script>
-        <div class="col-md-8">
-            <%= for (entry) in leaderboard { %>
+            <thead class="thead-dark">
                 <tr>
-                    <td><%= entry.Username %></td>
-                    <td><%= entry.Correct %></td>
-                    <td><%= entry.Wrong %></td>
+                    <th scope="col">User</th>
+                    <th scope="col">Correct Submissions</th>
+                    <th scope="col">Wrong/TLE submissions</th>
                 </tr>
-            <% } %>
-        </div>
-        </tbody>
+            </thead>
+            <div class="col-md-8">
+                <%= for (entry) in leaderboard { %>
+                <tr>
+                    <td>
+                        <%= entry.Username %>
+                    </td>
+                    <td>
+                        <%= entry.Correct %>
+                    </td>
+                    <td>
+                        <%= entry.Wrong %>
+                    </td>
+                </tr>
+                <% } %>
+            </div>
+            </tbody>
         </table>
     </div>
 </div>

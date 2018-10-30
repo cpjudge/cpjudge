@@ -1,16 +1,26 @@
-<div class="row">
-    <div class="col-md-3 offset-md-9">
+<div class="text-center mt-5">
+    <div class="col text-center">
+        <h2>On-going contests</h2>
+    </div>
+    <div class="">
         <%= if (current_host) { %>
-            <a href="<%= contestsCreatePath() %>" class="btn btn-success">Create New Contest</a>
+        <a href="<%= contestsCreatePath() %>" class="btn btn-primary">Create New Contest</a>
         <% } %>
     </div>
 </div>
+<hr>
 <div class="row">
     <div class="col-md-8">
         <%= for (c) in contests { %>
-            <hr>
-            <a href="<%= contestsDetailPath({cid: c.ID}) %>"><h1><%= humanize(c.Title) %></h1></a>
-            <p><%= markdown(truncate(c.Description, {"size": 200})) %></p>
+        <a href="<%= contestsDetailPath({cid: c.ID}) %>">
+            <h2>
+                <%= humanize(c.Title) %>
+            </h2>
+        </a>
+        <p>
+            <%= markdown(truncate(c.Description, {"size": 200})) %>
+        </p>
+        <hr>
         <% } %>
     </div>
 </div>

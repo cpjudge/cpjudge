@@ -1,70 +1,84 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
     <title>CP Judge</title>
     <%= stylesheetTag("application.css") %>
+    <%= stylesheetTag("style.css") %>
+    <link rel="shortcut icon" href="/assets/images/favicon.ico" type="image/x-icon">
     <meta name="csrf-param" content="authenticity_token" />
     <meta name="csrf-token" content="<%= authenticity_token %>" />
-  </head>
-  <body>
+</head>
+
+<body>
 
     <div class="container">
-    <!-- NavBar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2">
-        <a class="navbar-brand" href="<%= rootPath() %>">CP Judge</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-            <%= if (!current_user && !current_host) { %>
-                <li class="nav-item">
-                    <a class="nav-link" href="<%= hostsPath() %>">Host</a>
-                </li>
-            <% } %>
-            <%= if (current_host) { %>
-                <li class="nav-item">
-                    <a class="nav-link" href="<%= contestsHostIndexPath() %>">My Contests</a>
-                </li>
-            <% } %>
-            <%= if (current_user) { %>
-                <li class="nav-item">
-                    <a class="nav-link" href="<%= contestsUserIndexPath() %>">Contests</a>
-                </li>
-            <% } %>
-            <%= if (current_user) { %>
-                <li class="nav-item">
-                    <a class="nav-link" href="<%= submissionsIndexPath() %>">My Submissions</a>
-                </li>
-            <% } %>
-            </ul>
-            <ul class="navbar-nav">
-            <%= if (current_user) { %>
-                <li class="nav-item">
-                <a href="<%= usersLogoutPath() %>" class="nav-link">Logout</a>
-                </li>
-                <% } else if (current_host) { %>
-                <li class="nav-item">
-                <a href="<%= hostsLogoutPath() %>" class="nav-link">Logout</a>
-                </li>
-                <% } else { %>
-                <li class="nav-item">
-                    <a href="<%= usersLoginPath() %>" class="nav-link">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a href="<%= usersRegisterPath() %>" class="nav-link">Register</a>
-                </li>
-            <% } %>
-            </ul>
-        </div>
-        </nav> 
-        <!-- End NavBar --> 
-      <%= partial("flash.html") %>
-      <%= yield %>
+        <!-- NavBar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-2">
+            <a class="navbar-brand" href="<%= rootPath() %>">
+                <img src="/assets/images/favicon.ico" alt="CP-Judge">
+                CP Judge</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <%= if (!current_user && !current_host) { %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<%= hostsPath() %>">Host</a>
+                    </li>
+                    <% } %>
+                    <%= if (current_host) { %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<%= contestsHostIndexPath() %>">My Contests</a>
+                    </li>
+                    <% } %>
+                    <%= if (current_user) { %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<%= contestsUserIndexPath() %>">Contests</a>
+                    </li>
+                    <% } %>
+                    <%= if (current_user) { %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<%= submissionsIndexPath() %>">My Submissions</a>
+                    </li>
+                    <% } %>
+                </ul>
+                <ul class="navbar-nav">
+                    <%= if (current_user) { %>
+                    <li class="nav-item">
+                        <a href="<%= usersLogoutPath() %>" class="nav-link">Logout<i class="fa fa-sign-out"></i></a>
+                    </li>
+                    <% } else if (current_host) { %>
+                    <li class="nav-item">
+                        <a href="<%= hostsLogoutPath() %>" class="nav-link">
+                            Logout<i class="fa fa-sign-out"></i>
+                        </a>
+                    </li>
+                    <% } else { %>
+                    <li class="nav-item">
+                        <a href="<%= usersLoginPath() %>" class="nav-link">
+                            Login<i class="fa fa-sign-in"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<%= usersRegisterPath() %>" class="nav-link">
+                            Register<i class="fa fa-user-plus"></i>
+                        </a>
+                    </li>
+                    <% } %>
+                </ul>
+            </div>
+        </nav>
+        <!-- End NavBar -->
+        <%= partial("flash.html") %>
+        <%= yield %>
     </div>
 
     <%= javascriptTag("application.js") %>
-  </body>
+</body>
+
 </html>

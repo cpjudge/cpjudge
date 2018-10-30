@@ -1,8 +1,10 @@
 <div class="page-header">
-  <h1>New Host</h1>
+    <h1>New Host</h1>
 </div>
 
 <%= form_for(host, {action: hostsPath(), method: "POST"}) { %>
-  <%= partial("hosts/form.html") %>
-  <a href="<%= hostsPath() %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+<%= partial("hosts/form.html") %>
+<a href="<%= hostsPath() %>" class="btn btn-warning" data-confirm="Are you sure?">
+    Cancel
+</a>
 <% } %>
